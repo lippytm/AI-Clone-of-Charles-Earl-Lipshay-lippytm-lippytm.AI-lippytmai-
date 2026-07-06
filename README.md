@@ -365,7 +365,7 @@ pip install pytest
 python -m pytest tests/ -v
 ```
 
-134 tests covering all five industrial-grade sub-systems and full engine integration.
+225 tests covering all six industrial-grade sub-systems (including the AI Database System) and full engine integration.
 
 ---
 
