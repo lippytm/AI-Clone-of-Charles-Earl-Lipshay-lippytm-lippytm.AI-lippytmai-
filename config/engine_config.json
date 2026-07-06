@@ -1,0 +1,10 @@
+{
+  "_comment": "AI Clone Engine — runtime configuration. Edit to match your setup.",
+  "backend": "mock",
+  "model": "gpt-4o",
+  "temperature": 0.85,
+  "max_tokens": 512,
+  "memory_window": 20,
+  "session_persist": true,
+  "session_dir": ".sessions"
+}

@@ -1,0 +1,13 @@
+# AI Clone Engine — Python dependencies
+# Core (always required)
+# No hard runtime dependencies — the engine runs with the Python standard library
+# using the "mock" backend by default.
+
+# Optional: OpenAI backend
+# openai>=1.30.0
+
+# Optional: Ollama backend
+# requests>=2.31.0
+
+# Development / testing
+pytest>=8.0.0
