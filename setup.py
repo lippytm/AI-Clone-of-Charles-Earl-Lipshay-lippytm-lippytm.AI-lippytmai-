@@ -6,7 +6,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="lippytmai",
-    version="2.1.0",
+    version="3.0.0",
     description="AI Clone Engine of Charles-Earl-Lipshay (@lippytm)",
     author="lippytm",
     url="https://github.com/lippytm/AI-Clone-of-Charles-Earl-Lipshay-lippytm-lippytm.AI-lippytmai-",

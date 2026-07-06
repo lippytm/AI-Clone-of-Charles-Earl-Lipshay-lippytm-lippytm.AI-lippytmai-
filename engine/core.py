@@ -17,7 +17,12 @@ from typing import Any
 
 from .memory import ConversationMemory
 from .personality import PersonalityProfile
-from .responses import ResponseGenerator
+from .performance import PerformanceMonitor
+from .responses import ResponseGenerator, _BACKENDS
+from .sandbox import AISandbox
+from .self_healing import SelfHealingSystem
+from .self_improvement import SelfImprovementSystem
+from .toolkit import AIToolkit
 
 _DEFAULT_CONFIG = os.path.join(os.path.dirname(__file__), "..", "config", "engine_config.json")
 _DEFAULT_PROFILE = os.path.join(os.path.dirname(__file__), "..", "config", "personality_profile.json")
@@ -35,6 +40,14 @@ class CloneEngine:
     """
     The AI Clone Engine of Charles-Earl-Lipshay.
 
+    Sub-systems
+    -----------
+    toolkit          — AI Toolkit: code analysis, generation, test stubs, smell detection.
+    sandbox          — AI Sandbox: isolated Python code execution with timeout + safety.
+    self_improvement — Self-Improvement System: interaction tracking & quality scoring.
+    self_healing     — Self-Healing System: circuit breakers, backend failover, health monitoring.
+    performance      — Performance Monitor: latency, error rate, and memory metrics.
+
     Parameters
     ----------
     config_path:   Path to engine_config.json (uses bundled default if omitted).
@@ -42,7 +55,7 @@ class CloneEngine:
     session_id:    Unique session name for persistent memory.
     """
 
-    VERSION = "2.1.0"
+    VERSION = "3.0.0"
 
     def __init__(
         self,
@@ -68,14 +81,59 @@ class CloneEngine:
         )
 
         # Memory
+        session_dir = cfg.get("session_dir", ".sessions")
         self.memory = ConversationMemory(
             window=cfg.get("memory_window", 20),
             persist=cfg.get("session_persist", False),
             session_id=session_id,
-            session_dir=cfg.get("session_dir", ".sessions"),
+            session_dir=session_dir,
         )
 
         self._system_prompt = self.personality.build_system_prompt()
+
+        # ----------------------------------------------------------------
+        # Industrial-grade AI sub-systems
+        # ----------------------------------------------------------------
+
+        # AI Toolkit
+        self.toolkit = AIToolkit()
+
+        # AI Sandbox
+        sandbox_cfg = cfg.get("sandbox", {})
+        self.sandbox = AISandbox(
+            timeout=sandbox_cfg.get("timeout", 5.0),
+            max_output=sandbox_cfg.get("max_output", 8192),
+            safe_mode=sandbox_cfg.get("safe_mode", True),
+        )
+
+        # Self-Improvement System
+        improve_cfg = cfg.get("self_improvement", {})
+        self.self_improvement = SelfImprovementSystem(
+            persist_path=os.path.join(
+                session_dir, improve_cfg.get("persist_file", "self_improvement.json")
+            ),
+            history_limit=improve_cfg.get("history_limit", 500),
+        )
+
+        # Self-Healing System
+        healing_cfg = cfg.get("self_healing", {})
+        self.self_healing = SelfHealingSystem(
+            fallback_backends=healing_cfg.get(
+                "fallback_backends",
+                ["anthropic", "openrouter", "ollama", "hermes", "mock"],
+            ),
+            failure_threshold=healing_cfg.get("failure_threshold", 3),
+            recovery_timeout=healing_cfg.get("recovery_timeout", 60.0),
+        )
+
+        # Performance Monitor
+        perf_cfg = cfg.get("performance", {})
+        self.performance = PerformanceMonitor(
+            persist_path=os.path.join(
+                session_dir, perf_cfg.get("persist_file", "performance.json")
+            ),
+            sample_limit=perf_cfg.get("sample_limit", 1000),
+        )
 
     # ------------------------------------------------------------------
     # Public API
@@ -84,6 +142,10 @@ class CloneEngine:
     def chat(self, user_input: str) -> str:
         """
         Send a message and receive a response in character.
+
+        The call is wrapped by the Performance Monitor (latency), routed
+        through the Self-Healing System (backend failover), and recorded
+        by the Self-Improvement System (quality tracking).
 
         Parameters
         ----------
@@ -100,10 +162,30 @@ class CloneEngine:
         self.memory.add("user", user_input)
         messages = self.memory.get_context(self._system_prompt)
 
-        raw = self.generator.generate(messages)
-        response = self.personality.apply_style(raw)
+        try:
+            with self.performance.measure("chat", backend=self.generator.backend):
+                raw, _backend_used = self.self_healing.generate_with_failover(
+                    primary_backend=self.generator.backend,
+                    backends=_BACKENDS,
+                    messages=messages,
+                    model=self.generator.model,
+                    temperature=self.generator.temperature,
+                    max_tokens=self.generator.max_tokens,
+                )
+        except Exception:
+            raw = self.generator.generate(messages)
 
+        response = self.personality.apply_style(raw)
         self.memory.add("assistant", response)
+
+        self.self_improvement.record(
+            session_id=self.memory.session_id,
+            user_input=user_input,
+            response=response,
+        )
+        self.performance.record_memory()
+        self.performance.save()
+
         return response
 
     def reset(self) -> None:
@@ -124,6 +206,22 @@ class CloneEngine:
             f"Engine v  : {self.VERSION}",
         ]
         return "\n".join(lines)
+
+    def health_report(self) -> str:
+        """Return the Self-Healing System health report."""
+        return self.self_healing.report()
+
+    def improvement_report(self) -> str:
+        """Return the Self-Improvement System report."""
+        return self.self_improvement.report()
+
+    def performance_report(self) -> str:
+        """Return the Performance Monitor report."""
+        return self.performance.report()
+
+    def toolkit_report(self) -> str:
+        """Return the AI Toolkit usage report."""
+        return self.toolkit.report()
 
     def __repr__(self) -> str:
         return (

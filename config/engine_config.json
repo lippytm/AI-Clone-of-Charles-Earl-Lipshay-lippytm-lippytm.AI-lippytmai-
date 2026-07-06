@@ -28,5 +28,31 @@
   "max_tokens": 512,
   "memory_window": 20,
   "session_persist": true,
-  "session_dir": ".sessions"
+  "session_dir": ".sessions",
+
+  "sandbox": {
+    "_comment": "AI Sandbox — isolated Python code execution environment.",
+    "timeout": 5.0,
+    "max_output": 8192,
+    "safe_mode": true
+  },
+
+  "self_improvement": {
+    "_comment": "Self-Improvement System — interaction quality tracking and improvement suggestions.",
+    "persist_file": "self_improvement.json",
+    "history_limit": 500
+  },
+
+  "self_healing": {
+    "_comment": "Self-Healing System — circuit breakers and automatic backend failover.",
+    "fallback_backends": ["anthropic", "openrouter", "ollama", "hermes", "mock"],
+    "failure_threshold": 3,
+    "recovery_timeout": 60.0
+  },
+
+  "performance": {
+    "_comment": "Performance Monitor — latency, error rate, and memory metrics.",
+    "persist_file": "performance.json",
+    "sample_limit": 1000
+  }
 }
