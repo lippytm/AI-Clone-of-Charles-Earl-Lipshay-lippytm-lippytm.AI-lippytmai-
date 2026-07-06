@@ -15,6 +15,7 @@ import json
 import os
 from typing import Any
 
+from .database import AIDatabaseSystem
 from .memory import ConversationMemory
 from .personality import PersonalityProfile
 from .performance import PerformanceMonitor
@@ -55,7 +56,7 @@ class CloneEngine:
     session_id:    Unique session name for persistent memory.
     """
 
-    VERSION = "3.0.0"
+    VERSION = "4.0.0"
 
     def __init__(
         self,
@@ -135,6 +136,17 @@ class CloneEngine:
             sample_limit=perf_cfg.get("sample_limit", 1000),
         )
 
+        # ----------------------------------------------------------------
+        # AI Database System — Transparency, Security, Documentation,
+        # Improvement, and Healing databases.
+        # ----------------------------------------------------------------
+        db_cfg = cfg.get("database", {})
+        db_dir = db_cfg.get("db_dir", os.path.join(session_dir, "db"))
+        self.database = AIDatabaseSystem(
+            db_dir=db_dir,
+            record_limit=db_cfg.get("record_limit", 2000),
+        )
+
     # ------------------------------------------------------------------
     # Public API
     # ------------------------------------------------------------------
@@ -158,6 +170,11 @@ class CloneEngine:
         user_input = user_input.strip()
         if not user_input:
             return ""
+
+        # Security screening — log threats passively (non-blocking by default)
+        self.database.check_security(
+            user_input, session_id=self.memory.session_id
+        )
 
         self.memory.add("user", user_input)
         messages = self.memory.get_context(self._system_prompt)
@@ -183,6 +200,30 @@ class CloneEngine:
             user_input=user_input,
             response=response,
         )
+
+        # Populate AI Database System with the completed interaction
+        quality_score = (
+            self.self_improvement._records[-1].quality_score
+            if self.self_improvement._records
+            else 0.5
+        )
+        tags = (
+            self.self_improvement._records[-1].tags
+            if self.self_improvement._records
+            else ["general"]
+        )
+        self.database.record_interaction(
+            session_id=self.memory.session_id,
+            user_input=user_input,
+            response=response,
+            system_prompt=self._system_prompt,
+            backend=self.generator.backend,
+            model=self.generator.model,
+            temperature=self.generator.temperature,
+            quality_score=quality_score,
+            tags=tags,
+        )
+
         self.performance.record_memory()
         self.performance.save()
 
@@ -222,6 +263,10 @@ class CloneEngine:
     def toolkit_report(self) -> str:
         """Return the AI Toolkit usage report."""
         return self.toolkit.report()
+
+    def database_report(self) -> str:
+        """Return the AI Database System report (all five sub-databases)."""
+        return self.database.report()
 
     def __repr__(self) -> str:
         return (

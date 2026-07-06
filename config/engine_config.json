@@ -54,5 +54,11 @@
     "_comment": "Performance Monitor — latency, error rate, and memory metrics.",
     "persist_file": "performance.json",
     "sample_limit": 1000
+  },
+
+  "database": {
+    "_comment": "AI Database System — Transparency, Security, Documentation, Improvement, and Healing databases.",
+    "db_dir": ".sessions/db",
+    "record_limit": 2000
   }
 }
