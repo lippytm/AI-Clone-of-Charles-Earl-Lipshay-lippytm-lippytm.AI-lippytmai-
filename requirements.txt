@@ -1,0 +1,16 @@
+# AI Clone Engine — Python dependencies
+# Core (always required)
+# No hard runtime dependencies — the engine runs with the Python standard library
+# using the "mock" backend by default.
+
+# Optional: OpenAI backend ("openai") and OpenRouter backend ("openrouter")
+# openai>=1.30.0
+
+# Optional: Anthropic backend — Claude Fable 5 and other Anthropic models
+# anthropic>=0.27.0
+
+# Optional: Hermes and Ollama backends
+# requests>=2.31.0
+
+# Development / testing
+pytest>=8.0.0
