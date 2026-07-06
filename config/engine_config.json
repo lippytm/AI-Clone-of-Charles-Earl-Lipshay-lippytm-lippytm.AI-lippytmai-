@@ -1,5 +1,27 @@
 {
   "_comment": "AI Clone Engine — runtime configuration. Edit to match your setup.",
+  "_backends_available": [
+    "mock        — offline, no deps (default)",
+    "openai      — OpenAI API       (requires OPENAI_API_KEY)",
+    "anthropic   — Claude Fable 5   (requires ANTHROPIC_API_KEY)",
+    "hermes      — Nous-Hermes via Ollama (requires local Ollama)",
+    "ollama      — any Ollama model  (requires local Ollama)",
+    "openrouter  — cloud routing    (requires OPENROUTER_API_KEY)"
+  ],
+  "_models_by_backend": {
+    "mock": "any string (ignored)",
+    "openai": ["gpt-4o", "gpt-4-turbo", "gpt-3.5-turbo"],
+    "anthropic": ["claude-fable-5", "claude-opus-4", "claude-sonnet-4-5", "claude-haiku-4-5"],
+    "hermes": ["nous-hermes2", "hermes3", "hermes3:8b", "nous-hermes2-mistral"],
+    "ollama": ["llama3", "mistral", "phi3", "deepseek-coder", "codellama"],
+    "openrouter": [
+      "nousresearch/hermes-3-llama-3.1-405b",
+      "nousresearch/hermes-3-llama-3.1-70b",
+      "anthropic/claude-fable-5",
+      "openai/gpt-4o",
+      "mistralai/mistral-large"
+    ]
+  },
   "backend": "mock",
   "model": "gpt-4o",
   "temperature": 0.85,

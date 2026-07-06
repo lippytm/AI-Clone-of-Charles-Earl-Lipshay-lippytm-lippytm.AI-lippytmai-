@@ -42,7 +42,7 @@ class CloneEngine:
     session_id:    Unique session name for persistent memory.
     """
 
-    VERSION = "2.0.0"
+    VERSION = "2.1.0"
 
     def __init__(
         self,

@@ -6,7 +6,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="lippytmai",
-    version="2.0.0",
+    version="2.1.0",
     description="AI Clone Engine of Charles-Earl-Lipshay (@lippytm)",
     author="lippytm",
     url="https://github.com/lippytm/AI-Clone-of-Charles-Earl-Lipshay-lippytm-lippytm.AI-lippytmai-",
@@ -19,8 +19,12 @@ setup(
     },
     extras_require={
         "openai": ["openai>=1.30.0"],
+        "anthropic": ["anthropic>=0.27.0"],
+        "hermes": ["requests>=2.31.0"],
         "ollama": ["requests>=2.31.0"],
+        "openrouter": ["openai>=1.30.0"],
         "dev": ["pytest>=8.0.0"],
+        "all": ["openai>=1.30.0", "anthropic>=0.27.0", "requests>=2.31.0"],
     },
     entry_points={
         "console_scripts": [
