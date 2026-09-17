@@ -1,0 +1,64 @@
+{
+  "_comment": "AI Clone Engine — runtime configuration. Edit to match your setup.",
+  "_backends_available": [
+    "mock        — offline, no deps (default)",
+    "openai      — OpenAI API       (requires OPENAI_API_KEY)",
+    "anthropic   — Claude Fable 5   (requires ANTHROPIC_API_KEY)",
+    "hermes      — Nous-Hermes via Ollama (requires local Ollama)",
+    "ollama      — any Ollama model  (requires local Ollama)",
+    "openrouter  — cloud routing    (requires OPENROUTER_API_KEY)"
+  ],
+  "_models_by_backend": {
+    "mock": "any string (ignored)",
+    "openai": ["gpt-4o", "gpt-4-turbo", "gpt-3.5-turbo"],
+    "anthropic": ["claude-fable-5", "claude-opus-4", "claude-sonnet-4-5", "claude-haiku-4-5"],
+    "hermes": ["nous-hermes2", "hermes3", "hermes3:8b", "nous-hermes2-mistral"],
+    "ollama": ["llama3", "mistral", "phi3", "deepseek-coder", "codellama"],
+    "openrouter": [
+      "nousresearch/hermes-3-llama-3.1-405b",
+      "nousresearch/hermes-3-llama-3.1-70b",
+      "anthropic/claude-fable-5",
+      "openai/gpt-4o",
+      "mistralai/mistral-large"
+    ]
+  },
+  "backend": "mock",
+  "model": "gpt-4o",
+  "temperature": 0.85,
+  "max_tokens": 512,
+  "memory_window": 20,
+  "session_persist": true,
+  "session_dir": ".sessions",
+
+  "sandbox": {
+    "_comment": "AI Sandbox — isolated Python code execution environment.",
+    "timeout": 5.0,
+    "max_output": 8192,
+    "safe_mode": true
+  },
+
+  "self_improvement": {
+    "_comment": "Self-Improvement System — interaction quality tracking and improvement suggestions.",
+    "persist_file": "self_improvement.json",
+    "history_limit": 500
+  },
+
+  "self_healing": {
+    "_comment": "Self-Healing System — circuit breakers and automatic backend failover.",
+    "fallback_backends": ["anthropic", "openrouter", "ollama", "hermes", "mock"],
+    "failure_threshold": 3,
+    "recovery_timeout": 60.0
+  },
+
+  "performance": {
+    "_comment": "Performance Monitor — latency, error rate, and memory metrics.",
+    "persist_file": "performance.json",
+    "sample_limit": 1000
+  },
+
+  "database": {
+    "_comment": "AI Database System — Transparency, Security, Documentation, Improvement, and Healing databases.",
+    "db_dir": ".sessions/db",
+    "record_limit": 2000
+  }
+}
