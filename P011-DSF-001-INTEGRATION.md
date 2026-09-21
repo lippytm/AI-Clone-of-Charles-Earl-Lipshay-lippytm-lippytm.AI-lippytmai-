@@ -30,7 +30,7 @@ authorized_brand_names:
   - lippytm
   - lippytmai
   - lippytm.AI
-role: ""
+role: AI_JARVIS_ASSISTANT_ENGINEER_MANAGER|COMMUNICATIONS_ENGINEER_MANAGER|OTHER_APPROVED
 model_provider: ""
 model_line: CHATGPT_BUSINESS|GEMINI_NOTEBOOKLM|CLAUDE_HERMES|OTHER_APPROVED
 permitted_projects: []
@@ -52,6 +52,11 @@ last_security_review: ""
 ```
 
 Passports contain references to credentials stored in an external secret manager; they never contain passwords, API keys, recovery codes, private keys, identity documents, or medical records.
+
+Role labels should use canonical names when applicable, including:
+
+- `AI Jarvis Assistant Engineer Manager`
+- `Communications Engineer Manager`
 
 ## Truth controls
 

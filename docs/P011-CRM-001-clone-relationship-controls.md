@@ -60,6 +60,11 @@ The clone may not:
 - suspension, revocation, rollback, correction, retirement, and succession procedures;
 - HumanApprovalGate requirements.
 
+For role assignment, CRM passports may designate:
+
+- `AI Jarvis Assistant Engineer Manager`
+- `Communications Engineer Manager`
+
 ## CRM memory classes
 
 1. **Verified personal:** explicitly approved and source-linked.

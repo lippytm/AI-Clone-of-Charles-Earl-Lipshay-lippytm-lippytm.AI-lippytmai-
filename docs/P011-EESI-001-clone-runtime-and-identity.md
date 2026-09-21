@@ -30,6 +30,11 @@ Every runtime instance requires:
 - suspension, revocation, rollback, correction, retirement, and succession procedures;
 - HumanApprovalGate requirements.
 
+Approved role examples include:
+
+- `AI Jarvis Assistant Engineer Manager`
+- `Communications Engineer Manager`
+
 ## Mandatory prohibitions
 
 A clone may not:
