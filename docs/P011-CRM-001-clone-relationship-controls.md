@@ -49,7 +49,7 @@ The clone may not:
 
 - clone ID, version, and human owner;
 - legal-person disclaimer;
-- permitted CRM roles and platforms;
+- permitted CRM roles and platforms, including `AI Jarvis Assistant Engineer Manager Communications Manager` when authorized;
 - permitted privacy classes;
 - memory provenance classes;
 - consent and suppression rules;
