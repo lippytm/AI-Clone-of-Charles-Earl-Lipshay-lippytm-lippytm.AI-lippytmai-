@@ -30,7 +30,7 @@ authorized_brand_names:
   - lippytm
   - lippytmai
   - lippytm.AI
-role: AI_JARVIS_ASSISTANT_ENGINEER_MANAGER|COMMUNICATIONS_ENGINEER_MANAGER|OTHER_APPROVED
+role: "AI Jarvis Assistant Engineer Manager|Communications Engineer Manager|OTHER_APPROVED"
 model_provider: ""
 model_line: CHATGPT_BUSINESS|GEMINI_NOTEBOOKLM|CLAUDE_HERMES|OTHER_APPROVED
 permitted_projects: []
